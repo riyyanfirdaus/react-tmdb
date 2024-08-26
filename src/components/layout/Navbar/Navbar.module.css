@@ -103,7 +103,21 @@
       border-style: unset;
       border-radius: 0.3em;
 
-      :hover {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .login {
+      display: flex;
+      gap: 0.3em;
+      padding: 0.5em;
+      color: white;
+      background-color: var(--primary-color);
+      border-style: unset;
+      border-radius: 0.3em;
+
+      &:hover {
         cursor: pointer;
       }
     }
@@ -147,6 +161,20 @@
         }
 
         .logout {
+          display: flex;
+          gap: 0.3em;
+          padding: 0.5em;
+          color: white;
+          background-color: var(--primary-color);
+          border-style: unset;
+          border-radius: 0.3em;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+        .login {
           display: flex;
           gap: 0.3em;
           padding: 0.5em;
