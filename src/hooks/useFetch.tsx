@@ -53,6 +53,7 @@ export default function useFetch<T>(url: string, isCache?: boolean, localKey?: s
     if (!loadCachedData()) {
       fetchData();
     }
+
     const intervalId = setInterval(() => {
       fetchData();
     }, CACHE_DURATION);

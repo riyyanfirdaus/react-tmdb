@@ -1,16 +1,25 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Favorite, Home, MovieDetail, Watchlist } from "./pages";
 import { PrivateRoute } from "./components/layout";
+import ShowProvider from "./contexts/showContext";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: (
+        <ShowProvider>
+          <Home />
+        </ShowProvider>
+      ),
     },
     {
       path: "/movie/:id",
-      element: <MovieDetail />,
+      element: (
+        <ShowProvider>
+          <MovieDetail />
+        </ShowProvider>
+      ),
     },
     {
       path: "/favorite",
@@ -18,7 +27,11 @@ function App() {
       children: [
         {
           path: "/favorite",
-          element: <Favorite />,
+          element: (
+            <ShowProvider>
+              <Favorite />
+            </ShowProvider>
+          ),
         },
       ],
     },
@@ -28,7 +41,11 @@ function App() {
       children: [
         {
           path: "/watchlist",
-          element: <Watchlist />,
+          element: (
+            <ShowProvider>
+              <Watchlist />
+            </ShowProvider>
+          ),
         },
       ],
     },

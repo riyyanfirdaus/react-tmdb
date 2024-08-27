@@ -5,8 +5,8 @@ import { NowPlaying, TopRated } from "../../types/movie";
 import style from "./Home.module.css";
 
 const Home = () => {
-  const { data: dataNP, loading: loadingNP } = useFetch<NowPlaying>("https://api.themoviedb.org/3/movie/now_playing");
-  const { data: dataTR, loading: loadingTR } = useFetch<TopRated>("https://api.themoviedb.org/3/movie/top_rated");
+  const { data: dataNP } = useFetch<NowPlaying>("https://api.themoviedb.org/3/movie/now_playing");
+  const { data: dataTR } = useFetch<TopRated>("https://api.themoviedb.org/3/movie/top_rated");
 
   return (
     <PageWrapper container>

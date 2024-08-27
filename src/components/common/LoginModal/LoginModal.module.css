@@ -1,0 +1,44 @@
+.darkBG {
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100vh;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  position: fixed;
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+
+  .modal {
+    padding: 1em;
+    background: white;
+    color: white;
+    z-index: 10;
+    border-radius: 0.2em;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.5em;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    .image {
+      width: 150px;
+    }
+
+    .title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+  }
+}

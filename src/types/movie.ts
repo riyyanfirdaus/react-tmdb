@@ -44,9 +44,15 @@ export type MovieDetailType = {
   tagline: string;
 } & Omit<MovieResult, "genre_ids">;
 
-export type RecommendationMovie = {} & Omit<NowPlaying, "dates">;
+export type RecommendationMovie = Omit<NowPlaying, "dates">;
 
-export type SearchMovie = {} & Omit<NowPlaying, "dates">;
+export type SearchMovie = Omit<NowPlaying, "dates">;
+
+export type FavoritesMovie = Omit<NowPlaying, "dates">;
+
+export type WatchlistMovie = {
+  results: ({ media_type: string } & MovieResult)[];
+} & Omit<NowPlaying, "dates" | "results">;
 
 export type Genres = {
   id: number;

@@ -27,7 +27,6 @@ const SearchModal = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) =>
             <div className={style.result}>
               {!loading && data?.results ? data.results.map((result) => <Card key={result.id} {...result} />) : null}
               {loading && <p>Loading...</p>}
-              {!data?.results && <p>Not Found</p>}
             </div>
           </div>
         </div>

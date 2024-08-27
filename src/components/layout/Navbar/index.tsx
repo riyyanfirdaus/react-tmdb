@@ -1,9 +1,10 @@
 import { Cross1Icon, ExitIcon, HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link, NavLink } from "react-router-dom";
 import { SearchModal } from "../../common";
 import style from "./Navbar.module.css";
+import { ShowContext } from "../../../contexts/showContext";
 
 const Navbar = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -11,6 +12,14 @@ const Navbar = () => {
   const [externalPopup, setExternalPopup] = useState<{ proccess: boolean; extWindow: Window | null }>({ proccess: false, extWindow: null });
   const [reqToken, setReqToken] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const showContext = useContext(ShowContext);
+
+  if (!showContext) {
+    throw new Error("useContext(ShowContext) must be used within an AuthProvider");
+  }
+
+  const { handleShow } = showContext;
 
   const connectClick = (request_token: string) => {
     const width = 500;
@@ -34,7 +43,7 @@ const Navbar = () => {
         createAccessToken(reqToken);
         setExternalPopup({ proccess: false, extWindow: null });
         externalPopup.extWindow?.close();
-      }, 10000);
+      }, 8000);
     }
   }, [externalPopup.proccess]);
 
@@ -52,7 +61,7 @@ const Navbar = () => {
       const data = await res.json();
       connectClick(data?.request_token);
     } catch (err) {
-      console.error(err);
+      throw new Error(err instanceof Error ? err.message : "An unknown error occurred");
     }
   };
 
@@ -69,15 +78,18 @@ const Navbar = () => {
       });
 
       const data = await res.json();
+
+      if (!data.success) return;
+
       setCookie("user", data);
     } catch (err) {
-      console.error(err);
+      throw new Error(err instanceof Error ? err.message : "An unknown error occurred");
     }
   };
 
   const logoutAction = async () => {
     try {
-      const res = await fetch("https://api.themoviedb.org/4/auth/access_token", {
+      await fetch("https://api.themoviedb.org/4/auth/access_token", {
         method: "DELETE",
         headers: {
           accept: "application/json",
@@ -87,11 +99,10 @@ const Navbar = () => {
         body: JSON.stringify({ access_token: cookies?.user?.access_token }),
       });
 
-      const data = await res.json();
-      console.log(data);
       removeCookie("user");
+      localStorage.clear();
     } catch (err) {
-      console.error(err);
+      throw new Error(err instanceof Error ? err.message : "An unknown error occurred");
     }
   };
 
@@ -115,14 +126,18 @@ const Navbar = () => {
                 Favorite
               </NavLink>
             ) : (
-              <button className={style["unauthorized-link"]}>Favorite</button>
+              <button className={style["unauthorized-link"]} onClick={() => handleShow()}>
+                Favorite
+              </button>
             )}
             {cookies?.user?.access_token ? (
               <NavLink to={"/watchlist"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
                 Watchlist
               </NavLink>
             ) : (
-              <button className={style["unauthorized-link"]}>Watchlist</button>
+              <button className={style["unauthorized-link"]} onClick={() => handleShow()}>
+                Watchlist
+              </button>
             )}
 
             {cookies?.user?.access_token ? (
@@ -145,14 +160,18 @@ const Navbar = () => {
               Favorite
             </NavLink>
           ) : (
-            <button className={style["unauthorized-link"]}>Favorite</button>
+            <button className={style["unauthorized-link"]} onClick={() => handleShow()}>
+              Favorite
+            </button>
           )}
           {cookies?.user?.access_token ? (
             <NavLink to={"/watchlist"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
               Watchlist
             </NavLink>
           ) : (
-            <button className={style["unauthorized-link"]}>Watchlist</button>
+            <button className={style["unauthorized-link"]} onClick={() => handleShow()}>
+              Watchlist
+            </button>
           )}
 
           {cookies?.user?.access_token ? (
@@ -160,7 +179,9 @@ const Navbar = () => {
               <ExitIcon color="white" /> Logout
             </button>
           ) : (
-            <button className={style.login}>Login</button>
+            <button className={style.login} onClick={() => loginAction()}>
+              Login
+            </button>
           )}
         </div>
       </header>
