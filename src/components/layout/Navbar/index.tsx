@@ -1,14 +1,16 @@
 import { Cross1Icon, ExitIcon, HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import style from "./Navbar.module.css";
 import { useCookies } from "react-cookie";
+import { Link, NavLink } from "react-router-dom";
+import { SearchModal } from "../../common";
+import style from "./Navbar.module.css";
 
 const Navbar = () => {
   const [show, setShow] = useState<boolean>(false);
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [externalPopup, setExternalPopup] = useState<{ proccess: boolean; extWindow: Window | null }>({ proccess: false, extWindow: null });
   const [reqToken, setReqToken] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const connectClick = (request_token: string) => {
     const width = 500;
@@ -94,54 +96,76 @@ const Navbar = () => {
   };
 
   return (
-    <header className={style.container}>
-      <nav className={style.navbar}>
-        <Link to={"/"} className={style["brand-logo"]}>
-          CINEMA
-        </Link>
-        <div className={style["search-bar"]}>
-          <input className={style["input-bar"]} placeholder="search movie here" />
-          <button className={style["btn-search"]}>
-            <MagnifyingGlassIcon />
+    <>
+      <header className={style.container}>
+        <nav className={style.navbar}>
+          <Link to={"/"} className={style["brand-logo"]}>
+            CINEMA
+          </Link>
+          <button className={style["mobile-search"]} onClick={() => setIsOpen(true)}>
+            <MagnifyingGlassIcon width={20} height={20} /> Search
           </button>
-        </div>
-        <div className={style["navbar-list"]}>
-          <NavLink to={"/favorite"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
-            Favorite
-          </NavLink>
-          <NavLink to={"/watchlist"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
-            Watchlist
-          </NavLink>
+          <div className={style["navbar-list"]}>
+            <button className={style.search} onClick={() => setIsOpen(true)}>
+              <MagnifyingGlassIcon width={20} height={20} /> Search
+            </button>
+
+            {cookies?.user?.access_token ? (
+              <NavLink to={"/favorite"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
+                Favorite
+              </NavLink>
+            ) : (
+              <button className={style["unauthorized-link"]}>Favorite</button>
+            )}
+            {cookies?.user?.access_token ? (
+              <NavLink to={"/watchlist"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
+                Watchlist
+              </NavLink>
+            ) : (
+              <button className={style["unauthorized-link"]}>Watchlist</button>
+            )}
+
+            {cookies?.user?.access_token ? (
+              <button className={style.logout} onClick={() => logoutAction()}>
+                <ExitIcon color="white" /> Logout
+              </button>
+            ) : (
+              <button className={style.login} onClick={() => loginAction()}>
+                Login
+              </button>
+            )}
+          </div>
+          <button className={style["btn-menu"]} onClick={() => setShow((prev) => !prev)}>
+            {show ? <Cross1Icon width={20} height={20} /> : <HamburgerMenuIcon width={20} height={20} />}
+          </button>
+        </nav>
+        <div className={`${style["mobile-navbar-list"]} ${show ? style.show : ""}`}>
+          {cookies?.user?.access_token ? (
+            <NavLink to={"/favorite"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
+              Favorite
+            </NavLink>
+          ) : (
+            <button className={style["unauthorized-link"]}>Favorite</button>
+          )}
+          {cookies?.user?.access_token ? (
+            <NavLink to={"/watchlist"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
+              Watchlist
+            </NavLink>
+          ) : (
+            <button className={style["unauthorized-link"]}>Watchlist</button>
+          )}
+
           {cookies?.user?.access_token ? (
             <button className={style.logout} onClick={() => logoutAction()}>
               <ExitIcon color="white" /> Logout
             </button>
           ) : (
-            <button className={style.login} onClick={() => loginAction()}>
-              Login
-            </button>
+            <button className={style.login}>Login</button>
           )}
         </div>
-        <button className={style["btn-menu"]} onClick={() => setShow((prev) => !prev)}>
-          {show ? <Cross1Icon width={20} height={20} /> : <HamburgerMenuIcon width={20} height={20} />}
-        </button>
-      </nav>
-      <div className={`${style["mobile-navbar-list"]} ${show ? style.show : ""}`}>
-        <NavLink to={"/favorite"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
-          Favorite
-        </NavLink>
-        <NavLink to={"/watchlist"} className={({ isActive }) => [isActive ? style.active : "", style["navbar-item"]].join(" ")}>
-          Watchlist
-        </NavLink>
-        {cookies?.user?.access_token ? (
-          <button className={style.logout} onClick={() => logoutAction()}>
-            <ExitIcon color="white" /> Logout
-          </button>
-        ) : (
-          <button className={style.login}>Login</button>
-        )}
-      </div>
-    </header>
+      </header>
+      {isOpen && <SearchModal setIsOpen={setIsOpen} />}
+    </>
   );
 };
 

@@ -22,36 +22,18 @@
       text-decoration: none;
     }
 
-    .search-bar {
-      height: 35px;
+    .mobile-search {
+      border-style: unset;
+      background-color: unset;
+      border: 1px solid white;
+      border-radius: 1em;
+      padding: 0.3em 1.5em;
       display: flex;
       align-items: center;
-
-      .input-bar {
-        width: 160px;
-        height: 35px;
-        border-style: unset;
-        outline-style: unset;
-        padding: 0.5em 1em;
-        border-radius: 0.2em 0 0 0.2em;
-
-        &::placeholder {
-          font-size: 0.75rem;
-          font-family: "Poppins", sans-serif;
-        }
-      }
-
-      .btn-search {
-        height: 35px;
-        padding: 0 1em;
-        background-color: white;
-        border-style: unset;
-        border-radius: 0 0.2em 0.2em 0;
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
+      column-gap: 0.2em;
+      font-size: 1em;
+      color: white;
+      font-family: "Poppins", sans-serif;
     }
 
     .navbar-list {
@@ -92,6 +74,14 @@
       font-size: 1em;
       color: var(--primary-color);
       position: relative;
+    }
+
+    .unauthorized-link {
+      border-style: unset;
+      background-color: unset;
+      font-size: 1em;
+      color: var(--primary-color);
+      font-family: "Poppins", sans-serif;
     }
 
     .logout {
@@ -137,10 +127,32 @@
     .navbar {
       padding: 0 1.2em;
 
+      .mobile-search {
+        display: none;
+      }
+
       .navbar-list {
         display: flex;
         align-items: center;
         gap: 1em;
+
+        .search {
+          border-style: unset;
+          background-color: unset;
+          border: 1px solid white;
+          border-radius: 1em;
+          padding: 0.3em 1em;
+          display: flex;
+          align-items: center;
+          column-gap: 0.2em;
+          font-size: 1em;
+          color: white;
+          font-family: "Poppins", sans-serif;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
 
         .navbar-item {
           text-decoration: none;
@@ -157,6 +169,18 @@
 
           &:hover {
             border-bottom: 3px solid var(--primary-color);
+          }
+        }
+
+        .unauthorized-link {
+          border-style: unset;
+          background-color: unset;
+          font-size: 1em;
+          color: white;
+          font-family: "Poppins", sans-serif;
+
+          &:hover {
+            cursor: pointer;
           }
         }
 
@@ -186,12 +210,6 @@
           &:hover {
             cursor: pointer;
           }
-        }
-      }
-
-      .search-bar {
-        .input-bar {
-          width: 400px;
         }
       }
 

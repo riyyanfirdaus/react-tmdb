@@ -49,13 +49,26 @@
       }
 
       .info {
+        display: flex;
+        align-items: center;
+        column-gap: 0.5em;
         font-size: 0.75rem;
       }
 
       .action {
         display: flex;
         align-items: center;
-        column-gap: 0.5em;
+        column-gap: 0.7em;
+
+        .user-score {
+          display: flex;
+          align-items: center;
+          column-gap: 0.5em;
+
+          .user-score-text {
+            font-size: 0.7rem;
+          }
+        }
 
         .bookmark {
           cursor: pointer;
@@ -90,7 +103,7 @@
   padding: 0.5em;
   max-width: 1140px;
   width: 100%;
-  margin: auto;
+  margin: 1.5em auto;
   .wrapper {
     display: flex;
     flex-direction: column;
@@ -102,7 +115,7 @@
     }
 
     .card-container {
-      height: 250px;
+      height: 340px;
       display: flex;
       gap: 1em;
       overflow: auto;
@@ -151,11 +164,6 @@
 
   .recommendation {
     padding: 1.2em;
-    .wrapper {
-      .card-container {
-        height: 260px;
-      }
-    }
   }
 }
 

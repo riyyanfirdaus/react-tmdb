@@ -1,24 +1,31 @@
 import { Card } from "../../components/common";
 import { PageWrapper } from "../../components/layout";
+import useFetch from "../../hooks/useFetch";
+import { NowPlaying, TopRated } from "../../types/movie";
 import style from "./Home.module.css";
 
 const Home = () => {
+  const { data: dataNP, loading: loadingNP } = useFetch<NowPlaying>("https://api.themoviedb.org/3/movie/now_playing");
+  const { data: dataTR, loading: loadingTR } = useFetch<TopRated>("https://api.themoviedb.org/3/movie/top_rated");
+
   return (
     <PageWrapper container>
       <section className={style["now-playing"]}>
         <h2 className={style.title}>Now Playing</h2>
         <div className={style["card-container"]}>
-          {Array.from({ length: 10 }).map((_, idx) => (
-            <Card key={idx} />
+          {dataNP?.results.map((NP) => (
+            <Card key={NP.id} {...NP} />
           ))}
         </div>
       </section>
       <section className={style["top-rated"]}>
         <h2 className={style.title}>Top Rated</h2>
         <div className={style["card-container"]}>
-          {Array.from({ length: 12 }).map((_, idx) => (
-            <Card key={idx} />
-          ))}
+          {dataTR?.results.map((TR, idx) => {
+            if (idx >= 18) return;
+
+            return <Card key={TR.id} {...TR} />;
+          })}
         </div>
       </section>
     </PageWrapper>

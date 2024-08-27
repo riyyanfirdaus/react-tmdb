@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Favorite, Home, MovieDetail, Watchlist } from "./pages";
+import { PrivateRoute } from "./components/layout";
 
 function App() {
   const router = createBrowserRouter([
@@ -9,15 +10,27 @@ function App() {
     },
     {
       path: "/movie/:id",
-      element: <MovieDetail />
+      element: <MovieDetail />,
     },
     {
       path: "/favorite",
-      element: <Favorite />,
+      element: <PrivateRoute />,
+      children: [
+        {
+          path: "/favorite",
+          element: <Favorite />,
+        },
+      ],
     },
     {
       path: "/watchlist",
-      element: <Watchlist />,
+      element: <PrivateRoute />,
+      children: [
+        {
+          path: "/watchlist",
+          element: <Watchlist />,
+        },
+      ],
     },
     {
       path: "*",

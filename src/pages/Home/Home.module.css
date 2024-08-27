@@ -9,7 +9,7 @@
   }
 
   .card-container {
-    height: 250px;
+    height: 340px;
     display: flex;
     gap: 1em;
     overflow: auto;
@@ -30,13 +30,5 @@
     justify-content: space-between;
     row-gap: 2em;
     padding: 2em 0;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .now-playing {
-    .card-container {
-      height: 260px;
-    }
   }
 }
