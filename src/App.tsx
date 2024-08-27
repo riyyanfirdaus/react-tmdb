@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Favorite, Home, MovieDetail, Watchlist } from "./pages";
+import { Favorite, Home, MovieDetail, NotFound, Watchlist } from "./pages";
 import { PrivateRoute } from "./components/layout";
 import ShowProvider from "./contexts/showContext";
 
@@ -51,7 +51,7 @@ function App() {
     },
     {
       path: "*",
-      element: <h1>404 Not Found</h1>,
+      element: <NotFound />,
     },
   ]);
 
