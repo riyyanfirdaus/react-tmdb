@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ShowContext } from "../../../contexts/showContext";
 import { MovieResult } from "../../../types/movie";
 import style from "./Card.module.css";
+import useFetch from "../../../hooks/useFetch";
 
 const Card = ({ id, poster_path, original_title, release_date }: MovieResult) => {
   const [bookmark, setBookmark] = useState<boolean>(false);
@@ -26,6 +27,9 @@ const Card = ({ id, poster_path, original_title, release_date }: MovieResult) =>
   const isBookmark = watchlistCache?.data?.results?.find((res: MovieResult) => res.id === id);
   const isLoved = favoritesCache?.data?.results?.find((res: MovieResult) => res.id === id);
 
+  const { fetchData: refetchWatchlist } = useFetch(`https://api.themoviedb.org/4/account/${cookies?.user?.account_id}/movie/watchlist`, true, "watchlist");
+  const { fetchData: refetchFavorite } = useFetch(`https://api.themoviedb.org/4/account/${cookies?.user?.account_id}/movie/favorites`, true, "favorites");
+
   const addFavorite = async () => {
     try {
       const res = await fetch(`https://api.themoviedb.org/3/account/${cookies?.user?.account_id}/favorite`, {
@@ -40,7 +44,10 @@ const Card = ({ id, poster_path, original_title, release_date }: MovieResult) =>
 
       const data = await res.json();
 
-      if (data.success) setLoved(true);
+      if (data.success) {
+        setLoved(true);
+        refetchFavorite();
+      }
     } catch (err) {
       throw new Error(err instanceof Error ? err.message : "An unknown error occurred");
     }
@@ -60,7 +67,10 @@ const Card = ({ id, poster_path, original_title, release_date }: MovieResult) =>
 
       const data = await res.json();
 
-      if (data.success) setBookmark(true);
+      if (data.success) {
+        setBookmark(true);
+        refetchWatchlist();
+      }
     } catch (err) {
       throw new Error(err instanceof Error ? err.message : "An unknown error occurred");
     }
@@ -80,7 +90,10 @@ const Card = ({ id, poster_path, original_title, release_date }: MovieResult) =>
 
       const data = await res.json();
 
-      if (data.success) setLoved(false);
+      if (data.success) {
+        setLoved(false);
+        refetchFavorite();
+      }
     } catch (err) {
       throw new Error(err instanceof Error ? err.message : "An unknown error occurred");
     }
@@ -100,8 +113,10 @@ const Card = ({ id, poster_path, original_title, release_date }: MovieResult) =>
 
       const data = await res.json();
 
-      if (data.success) setBookmark(false);
-      console.log(data)
+      if (data.success) {
+        setBookmark(false);
+        refetchWatchlist();
+      }
     } catch (err) {
       throw new Error(err instanceof Error ? err.message : "An unknown error occurred");
     }

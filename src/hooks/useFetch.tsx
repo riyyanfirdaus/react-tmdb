@@ -52,6 +52,7 @@ export default function useFetch<T>(url: string, isCache?: boolean, localKey?: s
   useEffect(() => {
     if (!loadCachedData()) {
       fetchData();
+      console.log("fetching...");
     }
 
     const intervalId = setInterval(() => {
@@ -61,5 +62,5 @@ export default function useFetch<T>(url: string, isCache?: boolean, localKey?: s
     return () => clearInterval(intervalId);
   }, [url]);
 
-  return { data, error, loading };
+  return { data, error, loading, fetchData };
 }

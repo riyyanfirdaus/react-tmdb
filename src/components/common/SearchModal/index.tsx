@@ -9,7 +9,7 @@ import style from "./SearchModal.module.css";
 const SearchModal = ({ setIsOpen }: { setIsOpen: (isOpen: boolean) => void }) => {
   const [search, setSearch] = useState<string>("");
   const searchDeabounce = useDebounce<string>(search || "", 500);
-  const { data, loading } = useFetch<SearchMovie>(`https://api.themoviedb.org/3/search/movie?query=${searchDeabounce}`);
+  const { data, loading } = useFetch<SearchMovie>(`https://api.themoviedb.org/3/search/movie?query=${searchDeabounce}`, true, "search-movie");
 
   return (
     <>
